@@ -1,8 +1,4 @@
-﻿using System;
-using System.Text;
-using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+﻿using NUnit.Framework;
 
 namespace WebAddressbookTests
 {
@@ -16,6 +12,18 @@ namespace WebAddressbookTests
             {
                 MiddleName = "Ivanovich",
                 TelephoneMobile = "89131234567"
+            };
+
+            app.Contacts.Create(contact);
+            app.Auth.Logout();
+        }
+
+        [Test]
+        public void EmptyContactCreationTest()
+        {
+            ContactData contact = new("", "")
+            {
+                MiddleName = "",
             };
 
             app.Contacts.Create(contact);

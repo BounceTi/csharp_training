@@ -19,7 +19,18 @@ namespace WebAddressbookTests
             return this;
         }
 
-        internal GroupHelper Remove(int groupNumber)
+        public GroupHelper Modify(int groupNumber, GroupData newData)
+        {
+            manager.Navigator.GoToGroupsPage();
+            SelectGroup(groupNumber);
+            InitGroupModification();
+            FillGroupForm(newData);
+            SubmitGroupModification();
+            ReturnToGroupsPage();
+            return this;
+        }
+
+        public GroupHelper Remove(int groupNumber)
         {
             manager.Navigator.GoToGroupsPage();
             SelectGroup(groupNumber);
@@ -65,6 +76,18 @@ namespace WebAddressbookTests
         public GroupHelper ReturnToGroupsPage()
         {
             driver.FindElement(By.LinkText("groups")).Click();
+            return this;
+        }
+
+        public GroupHelper SubmitGroupModification()
+        {
+            driver.FindElement(By.Name("update")).Click();
+            return this;
+        }
+
+        public GroupHelper InitGroupModification()
+        {
+            driver.FindElement(By.Name("edit")).Click();
             return this;
         }
     }
