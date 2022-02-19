@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace addressbook_web_tests
 {
-    public class Untitled
+    public class FiguresUnitTests
     {
         [Test]
         public void TestMethodSquare()
