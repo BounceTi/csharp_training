@@ -89,7 +89,7 @@ namespace WebAddressbookTests
 
         public ContactHelper InitContactModification(int contactNumber)
         {
-            driver.FindElement(By.XPath("//tr[@name='entry'][" + contactNumber + "]/td[8]/a/img")).Click();
+            driver.FindElement(By.XPath("//tr[@name='entry'][" + contactNumber + "]//img[@title='Edit']")).Click();
             return this;
         }
     }
