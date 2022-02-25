@@ -24,6 +24,7 @@ namespace WebAddressbookTests
 
         public ContactHelper Modify(int contactNumber, ContactData newData)
         {
+            CreateIfNotExist();
             manager.Navigator.GoToHomePage();
             InitContactModification(contactNumber);
             FillContactForm(newData);
@@ -34,10 +35,26 @@ namespace WebAddressbookTests
 
         public ContactHelper Remove(int contactNumber)
         {
+            CreateIfNotExist();
             manager.Navigator.GoToHomePage();
             SelectContact(contactNumber);
             RemoveContact();
             ReturnToContactsPage();
+            return this;
+        }
+
+        public ContactHelper CreateIfNotExist()
+        {
+            if (!IsElementPresent(By.ClassName("entry")))
+            {
+                ContactData contact = new("Ivan", "Ivanov")
+                {
+                    MiddleName = "Ivanovich",
+                    TelephoneMobile = "89131234567"
+                };
+
+                Create(contact);
+            }
             return this;
         }
 
@@ -48,14 +65,10 @@ namespace WebAddressbookTests
         }
         public ContactHelper FillContactForm(ContactData contact)
         {
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.FirstName);
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.LastName);
-            driver.FindElement(By.Name("middlename")).Clear();
-            driver.FindElement(By.Name("middlename")).SendKeys(contact.MiddleName);
-            driver.FindElement(By.Name("mobile")).Clear();
-            driver.FindElement(By.Name("mobile")).SendKeys(contact.TelephoneMobile);
+            Type(By.Name("firstname"), contact.FirstName);
+            Type(By.Name("lastname"), contact.LastName);
+            Type(By.Name("middlename"), contact.MiddleName);
+            Type(By.Name("mobile"), contact.TelephoneMobile);
             return this;
         }
         public ContactHelper SubmitContactCreation()

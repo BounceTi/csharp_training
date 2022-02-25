@@ -2,7 +2,7 @@
 
 namespace WebAddressbookTests
 {
-    internal class ContactModificationTests : TestBase
+    internal class ContactModificationTests : AuthTestBase
     {
         [Test]
         public void ContactModificationTest()
@@ -13,8 +13,7 @@ namespace WebAddressbookTests
                 TelephoneMobile = "89137654321"
             };
 
-            app.Contacts.Modify(3, newData);
-            app.Auth.Logout();
+            app.Contacts.Modify(1, newData);
         }
     }
 }

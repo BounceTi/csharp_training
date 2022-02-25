@@ -3,7 +3,7 @@
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class ContactCreationTests : TestBase
+    public class ContactCreationTests : AuthTestBase
     {
         [Test]
         public void ContactCreationTest() 
@@ -15,7 +15,6 @@ namespace WebAddressbookTests
             };
 
             app.Contacts.Create(contact);
-            app.Auth.Logout();
         }
 
         [Test]
@@ -27,7 +26,6 @@ namespace WebAddressbookTests
             };
 
             app.Contacts.Create(contact);
-            app.Auth.Logout();
         }
     }
 }
