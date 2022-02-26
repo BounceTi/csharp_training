@@ -2,7 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Threading;
-
+using NUnit.Framework;
 
 namespace WebAddressbookTests
 {
@@ -17,7 +17,7 @@ namespace WebAddressbookTests
         protected GroupHelper groupHelper;
         protected ContactHelper contactHelper;
 
-        private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
+        private static ThreadLocal<ApplicationManager> app = new();
 
         private ApplicationManager()
         {
@@ -30,7 +30,6 @@ namespace WebAddressbookTests
             contactHelper = new ContactHelper(this);
         }
 
-        
         ~ApplicationManager()
         {
             try
@@ -47,7 +46,7 @@ namespace WebAddressbookTests
         {
             if (!app.IsValueCreated)
             {
-                ApplicationManager newInstance = new ApplicationManager();
+                ApplicationManager newInstance = new();
                 newInstance.Navigator.GoToHomePage();
                 app.Value = newInstance;
             }

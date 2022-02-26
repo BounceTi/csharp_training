@@ -45,7 +45,7 @@ namespace WebAddressbookTests
 
         public ContactHelper CreateIfNotExist()
         {
-            if (!IsElementPresent(By.ClassName("entry")))
+            if (!IsElementPresent(By.Name("entry")))
             {
                 ContactData contact = new("Ivan", "Ivanov")
                 {
