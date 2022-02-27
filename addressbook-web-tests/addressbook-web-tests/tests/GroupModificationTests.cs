@@ -8,6 +8,17 @@ namespace WebAddressbookTests
         [Test]
         public void GroupModificationTest()
         {
+            if (!app.Groups.CheckGroupExist())
+            {
+                GroupData group = new("Name")
+                {
+                    Header = "Header",
+                    Footer = "Footer"
+                };
+
+                app.Groups.Create(group);
+            }
+
             GroupData newData = new("NameModified")
             {
                 Header = "HeaderModified",

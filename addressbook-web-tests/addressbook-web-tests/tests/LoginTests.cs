@@ -12,7 +12,7 @@ namespace WebAddressbookTests
             app.Auth.Logout();
 
             // Action
-            AccountData account = new AccountData("admin", "secret");
+            AccountData account = new("admin", "secret");
             app.Auth.Login(account);
 
             // Verification
@@ -26,7 +26,7 @@ namespace WebAddressbookTests
             app.Auth.Logout();
 
             // Action
-            AccountData account = new AccountData("admin", "123456");
+            AccountData account = new("admin", "123456");
             app.Auth.Login(account);
 
             // Verification

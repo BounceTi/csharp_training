@@ -21,7 +21,6 @@ namespace WebAddressbookTests
 
         public GroupHelper Modify(int groupNumber, GroupData newData)
         {
-            CreateIfNotExist();
             manager.Navigator.GoToGroupsPage();
             SelectGroup(groupNumber);
             InitGroupModification();
@@ -33,7 +32,6 @@ namespace WebAddressbookTests
 
         public GroupHelper Remove(int groupNumber)
         {
-            CreateIfNotExist();
             manager.Navigator.GoToGroupsPage();
             SelectGroup(groupNumber);
             RemoveGroup();
@@ -41,18 +39,10 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper CreateIfNotExist()
+        public bool CheckGroupExist()
         {
-            if (!IsElementPresent(By.ClassName("group")))
-            {
-                GroupData group = new("Name")
-                {
-                    Header = "Header",
-                    Footer = "Footer"
-                };
-                Create(group);
-            }
-            return this;
+            manager.Navigator.GoToGroupsPage();
+            return IsElementPresent(By.XPath("//span[@class='group']"));
         }
 
         public GroupHelper InitGroupCreation()

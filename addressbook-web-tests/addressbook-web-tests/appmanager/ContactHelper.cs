@@ -24,7 +24,6 @@ namespace WebAddressbookTests
 
         public ContactHelper Modify(int contactNumber, ContactData newData)
         {
-            CreateIfNotExist();
             manager.Navigator.GoToHomePage();
             InitContactModification(contactNumber);
             FillContactForm(newData);
@@ -35,29 +34,17 @@ namespace WebAddressbookTests
 
         public ContactHelper Remove(int contactNumber)
         {
-            CreateIfNotExist();
             manager.Navigator.GoToHomePage();
             SelectContact(contactNumber);
             RemoveContact();
             ReturnToContactsPage();
             return this;
         }
-
-        public ContactHelper CreateIfNotExist()
+        public bool CheckContactExist()
         {
-            if (!IsElementPresent(By.Name("entry")))
-            {
-                ContactData contact = new("Ivan", "Ivanov")
-                {
-                    MiddleName = "Ivanovich",
-                    TelephoneMobile = "89131234567"
-                };
-
-                Create(contact);
-            }
-            return this;
+            manager.Navigator.GoToHomePage();
+            return IsElementPresent(By.Name("entry"));
         }
-
         public ContactHelper InitContactCreation()
         {
             driver.FindElement(By.LinkText("add new")).Click();
