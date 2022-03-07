@@ -7,7 +7,7 @@ using static System.Net.WebRequestMethods;
 
 namespace WebAddressbookTests
 {
-    public class ContactData
+    public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
         private string firstName;
         private string lastName;
@@ -36,6 +36,40 @@ namespace WebAddressbookTests
         {
             this.firstName = firstName;
             this.lastName = lastName;
+        }
+
+        public bool Equals(ContactData other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return FirstName == other.FirstName && LastName == other.LastName;
+        }
+
+        public override int GetHashCode()
+        {
+            return FirstName.GetHashCode() + LastName.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return "First Name = " + firstName + "\n" 
+                + "Last Name = " + lastName;
+        }
+
+        public int CompareTo(ContactData other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return 1;
+            }
+            return FirstName.CompareTo(other.FirstName) + LastName.CompareTo(other.LastName);
         }
 
         public string FirstName 
