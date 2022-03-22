@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using System;
+﻿using OpenQA.Selenium;
 using System.Collections.Generic;
 
 namespace WebAddressbookTests

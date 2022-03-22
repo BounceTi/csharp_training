@@ -12,7 +12,7 @@ namespace WebAddressbookTests
             ContactData contact = new("Ivan", "Ivanov")
             {
                 MiddleName = "Ivanovich",
-                TelephoneMobile = "89131234567"
+                MobilePhone = "89131234567"
             };
 
             List<ContactData> oldContacts = app.Contacts.GetContactList();

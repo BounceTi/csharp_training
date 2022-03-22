@@ -12,7 +12,7 @@ namespace WebAddressbookTests
             ContactData newData = new("NewIvan", "NewIvanov")
             {
                 MiddleName = "NewIvanovich",
-                TelephoneMobile = "89137654321"
+                MobilePhone = "89137654321"
             };
 
             if (!app.Contacts.CheckContactExist())
@@ -20,7 +20,7 @@ namespace WebAddressbookTests
                 ContactData contact = new("Ivan", "Ivanov")
                 {
                     MiddleName = "Ivanovich",
-                    TelephoneMobile = "89131234567"
+                    MobilePhone = "89131234567"
                 };
 
                 app.Contacts.Create(contact);

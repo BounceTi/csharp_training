@@ -15,7 +15,7 @@ namespace WebAddressbookTests
                 ContactData contact = new("Ivan", "Ivanov")
                 {
                     MiddleName = "Ivanovich",
-                    TelephoneMobile = "89131234567"
+                    MobilePhone = "89131234567"
                 };
 
                 app.Contacts.Create(contact);
