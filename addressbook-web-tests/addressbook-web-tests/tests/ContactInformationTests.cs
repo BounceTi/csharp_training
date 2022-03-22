@@ -24,9 +24,7 @@ namespace WebAddressbookTests
         public void TestContactInformationFromDetailsAndEditForm()
         {
             string fromTabel = app.Contacts.GetAsStringContactInformationFromEditForm(3);
-            Console.Write(fromTabel);
             string fromForm = app.Contacts.GetContactInformationFromDetails(3);
-            Console.Write(fromForm);
 
             Assert.AreEqual(fromTabel, fromForm);
         }
