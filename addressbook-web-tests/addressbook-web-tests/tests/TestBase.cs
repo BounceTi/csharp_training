@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Text;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
 {
@@ -23,7 +20,7 @@ namespace WebAddressbookTests
             var builder = new StringBuilder();
             for (int i = 0; i < l; i++)
             {
-                builder.Append(Convert.ToChar(Convert.ToInt32(32 + rnd.NextDouble() * 223)));
+                builder.Append(Convert.ToChar(32 + Convert.ToInt32(rnd.NextDouble() * 65)));
             }
             return builder.ToString();
         }

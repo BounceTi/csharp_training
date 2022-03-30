@@ -1,6 +1,9 @@
-﻿using NUnit.Framework;
-using System;
+﻿using Newtonsoft.Json;
+using NUnit.Framework;
+using Excel = Microsoft.Office.Interop.Excel;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace WebAddressbookTests
 {
@@ -21,7 +24,60 @@ namespace WebAddressbookTests
             return groups;
         }
 
-        [Test, TestCaseSource("RandomGroupDataProvider")]
+        public static IEnumerable<GroupData> GroupDataFromCsvFile()
+        {
+            var groups = new List<GroupData>();
+            string[] lines = File.ReadAllLines(@"groups.csv");
+            foreach (string l in lines)
+            {
+                string[] parts = l.Split(',');
+                groups.Add(new GroupData(parts[0])
+                {
+                    Header = parts[1],
+                    Footer = parts[2]
+                });
+            }
+            return groups;
+        }
+
+        public static IEnumerable<GroupData> GroupDataFromXmlFile()
+        {
+            var groups = new List<GroupData>();
+            return (List<GroupData>)
+                new XmlSerializer(typeof(List<GroupData>))
+                .Deserialize(new StreamReader(@"groups.xml"));
+        }
+
+        public static IEnumerable<GroupData> GroupDataFromJsonFile()
+        {
+            var groups = new List<GroupData>();
+            return JsonConvert.DeserializeObject<List<GroupData>>(
+                File.ReadAllText(@"groups.json"));
+        }
+
+        public static IEnumerable<GroupData> GroupDataFromExcelFile()
+        {
+            var groups = new List<GroupData>();
+            var app = new Excel.Application();
+            var wb = app.Workbooks.Open(Path.Combine(Directory.GetCurrentDirectory(), "groups.xlsx"));
+            var sheet = wb.ActiveSheet;
+            var range = sheet.UsedRange;
+            for (int i = 1; i <= range.Rows.Count; i++)
+            {
+                groups.Add(new GroupData()
+                {
+                    Name = range.Cells[i, 1].Value,
+                    Header = range.Cells[i, 2].Value,
+                    Footer = range.Cells[i, 3].Value,
+                });
+            }
+            wb.Close();
+            app.Visible = false;
+            app.Quit();
+            return groups;
+        }
+
+        [Test, TestCaseSource("GroupDataFromJsonFile")]
         public void GroupCreationTest(GroupData group)
         {
             List<GroupData> oldGroups = app.Groups.GetGroupList();

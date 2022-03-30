@@ -158,27 +158,61 @@ namespace WebAddressbookTests
             manager.Navigator.GoToHomePage();
             InitContactModification(index);
             string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            firstName = AddTextIfStringIsNotNull(firstName, "", " ");
+
             string middleName = driver.FindElement(By.Name("middlename")).GetAttribute("value");
+            middleName = AddTextIfStringIsNotNull(middleName, "", " ");
+
             string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            lastName = AddTextIfStringIsNotNull(lastName, "", "\r\n");
+
             string nickName = driver.FindElement(By.Name("nickname")).GetAttribute("value");
+            nickName = AddTextIfStringIsNotNull(nickName, "", "\r\n");
+
             string title = driver.FindElement(By.Name("title")).GetAttribute("value");
+            title = AddTextIfStringIsNotNull(title, "", "\r\n");
+
             string company = driver.FindElement(By.Name("company")).GetAttribute("value");
+            company = AddTextIfStringIsNotNull(company, "", "\r\n");
+
             string address = driver.FindElement(By.Name("address")).GetAttribute("value");
+            address = AddTextIfStringIsNotNull(address, "", "\r\n");
+
             string email = driver.FindElement(By.Name("email")).GetAttribute("value");
+            email = AddTextIfStringIsNotNull(email, "\r\n", "\r\n");
+
             string email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
+            email2 = AddTextIfStringIsNotNull(email2, "", "\r\n");
+
             string email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
+            email3 = AddTextIfStringIsNotNull(email3, "", "\r\n");
 
-            string homePhone = "H: " + driver.FindElement(By.Name("home")).GetAttribute("value");
-            string mobilePhone = "M: " + driver.FindElement(By.Name("mobile")).GetAttribute("value");
-            string workPhone = "W: " + driver.FindElement(By.Name("work")).GetAttribute("value");
-            string fax = "F: " + driver.FindElement(By.Name("fax")).GetAttribute("value");
+            string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
+            homePhone = AddTextIfStringIsNotNull(homePhone, "\r\n" + "H: ", "\r\n");
 
-            string homepage = "Homepage:" + "\r\n" + driver.FindElement(By.Name("homepage")).GetAttribute("value");
+            string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
+            mobilePhone = AddTextIfStringIsNotNull(mobilePhone, "M: ", "\r\n");
 
-            return firstName + " " + middleName + " " + lastName + "\r\n" + nickName + "\r\n" + title
-                + "\r\n" + company + "\r\n" + address + "\r\n" + "\r\n" + homePhone + "\r\n" + mobilePhone 
-                + "\r\n" + workPhone + "\r\n" + fax + "\r\n" + "\r\n" + email + "\r\n" + email2 + "\r\n" 
-                + email3 + "\r\n" + homepage;
+            string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
+            workPhone = AddTextIfStringIsNotNull(workPhone, "W: ", "\r\n");
+
+            string fax = driver.FindElement(By.Name("fax")).GetAttribute("value");
+            fax = AddTextIfStringIsNotNull(fax, "F: ", "\r\n");
+
+            string homepage = driver.FindElement(By.Name("homepage")).GetAttribute("value");
+            homepage = AddTextIfStringIsNotNull(homepage, "Homepage:" + "\r\n", "");
+
+            return (firstName + middleName + lastName + nickName + title 
+                + company + address + homePhone + mobilePhone + workPhone 
+                + fax + email + email2 + email3 + homepage).Trim();
+        }
+        public static string AddTextIfStringIsNotNull(string str, string before, string after)
+        {
+            if (str.Equals(null) || str.Equals(""))
+            {
+                return "";
+            }
+            return before + str + after;
         }
         public string GetContactInformationFromDetails(int index)
         {

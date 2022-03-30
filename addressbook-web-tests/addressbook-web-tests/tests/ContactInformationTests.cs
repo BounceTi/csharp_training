@@ -13,8 +13,9 @@ namespace WebAddressbookTests
         [Test]
         public void TestContactInformationFromTableAndEditForm()
         {
-            ContactData fromTabel = app.Contacts.GetContactInformationFromTable(3);
-            ContactData fromForm = app.Contacts.GetContactInformationFromEditForm(3);
+            int contactNumber = 3;
+            ContactData fromTabel = app.Contacts.GetContactInformationFromTable(contactNumber);
+            ContactData fromForm = app.Contacts.GetContactInformationFromEditForm(contactNumber);
 
             Assert.AreEqual(fromTabel, fromForm);
             Assert.AreEqual(fromTabel.Address, fromForm.Address);
@@ -23,8 +24,10 @@ namespace WebAddressbookTests
         [Test]
         public void TestContactInformationFromDetailsAndEditForm()
         {
-            string fromTabel = app.Contacts.GetAsStringContactInformationFromEditForm(3);
-            string fromForm = app.Contacts.GetContactInformationFromDetails(3);
+            int contactNumber = 4;
+            string fromTabel = app.Contacts.GetAsStringContactInformationFromEditForm(contactNumber);
+
+            string fromForm = app.Contacts.GetContactInformationFromDetails(contactNumber);
 
             Assert.AreEqual(fromTabel, fromForm);
         }
