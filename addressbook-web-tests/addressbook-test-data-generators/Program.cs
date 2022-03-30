@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Xml.Serialization;
 using WebAddressbookTests;
+using System.Runtime.Serialization;
 
 namespace addressbook_test_data_generators
 {
@@ -9,46 +10,55 @@ namespace addressbook_test_data_generators
     {
         static void Main(string[] args)
         {
-            int count = Convert.ToInt32(args[0]);
-            string filename = args[1];
-            string format = args[2];
+            string dataType = args[0];
+            int count = Convert.ToInt32(args[1]);
+            string filename = args[2];
+            string format = args[3];
 
-            List<GroupData> groups = new();
-            for (int i = 0; i < count; i++)
-            {
-                groups.Add(new GroupData(TestBase.GenerateRandomString(10))
+            if (dataType == "groups") {
+                List<GroupData> groups = new();
+                for (int i = 0; i < count; i++)
                 {
-                    Header = TestBase.GenerateRandomString(100),
-                    Footer = TestBase.GenerateRandomString(100)
-                });
-            }
-            if (format == "excel")
-            {
-                WriteGroupsToExcelFile(groups, filename);
+                    groups.Add(new GroupData(TestBase.GenerateRandomString(10))
+                    {
+                        Header = TestBase.GenerateRandomString(10),
+                        Footer = TestBase.GenerateRandomString(10)
+                    });
+                }
+                WriteToFiles(filename, format, groups);
             } 
-            else
+            else if (dataType == "contacts")
             {
-                var writer = new StreamWriter(filename);
-                if (format == "csv")
+                List<ContactData> contacts = new();
+                for (int i = 0; i < count; i++)
                 {
-                    WriteGroupsToCsvFile(groups, writer);
+                    contacts.Add(new ContactData(TestBase.GenerateRandomString(10), TestBase.GenerateRandomString(10))
+                    {
+                        MiddleName = TestBase.GenerateRandomString(10),
+                        Address = TestBase.GenerateRandomString(10)
+                    });
                 }
-                else if (format == "xml")
-                {
-                    WriteGroupsToXmlFile(groups, writer);
-                }
-                else if (format == "json")
-                {
-                    WriteGroupsToJsonFile(groups, writer);
-                }
-                else
-                {
-                    Console.Out.Write("Unrecognized format " + format);
-                }
-                writer.Close();
+                WriteToFiles(filename, format, contacts);
             }
         }
 
+        private static void WriteToFiles<T>(string filename, string format, List<T> data)
+        {
+            var writer = new StreamWriter(filename);
+            if (format == "xml")
+            {
+                WriteToXmlFile(data, writer);
+            }
+            else if (format == "json")
+            {
+                WriteToJsonFile(data, writer);
+            }
+            else
+            {
+                Console.Out.Write("Unrecognized format " + format);
+            }
+            writer.Close();
+        }
         private static void WriteGroupsToExcelFile(List<GroupData> groups, string filename)
         {
             Excel.Application app = new();
@@ -82,14 +92,13 @@ namespace addressbook_test_data_generators
             }
         }
 
-        static void WriteGroupsToXmlFile(List<GroupData> groups, StreamWriter writer)
+        private static void WriteToXmlFile<T>(List<T> data, StreamWriter writer)
         {
-            new XmlSerializer(typeof(List<GroupData>)).Serialize(writer, groups);
+            new XmlSerializer(typeof(List<T>)).Serialize(writer, data);
         }
-
-        static void WriteGroupsToJsonFile(List<GroupData> groups, StreamWriter writer)
+        static void WriteToJsonFile<T>(List<T> data, StreamWriter writer)
         {
-            writer.Write(JsonConvert.SerializeObject(groups, Formatting.Indented));
+            writer.Write(JsonConvert.SerializeObject(data, Formatting.Indented));
         }
     }
 }
