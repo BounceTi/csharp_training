@@ -26,10 +26,8 @@ namespace WebAddressbookTests
         {
             int contactNumber = 3;
             string fromTabel = app.Contacts.GetAsStringContactInformationFromEditForm(contactNumber);
-            Console.Write(fromTabel);
 
             string fromForm = app.Contacts.GetContactInformationFromDetails(contactNumber);
-            Console.Write(fromForm);
 
             Assert.AreEqual(fromTabel, fromForm);
         }

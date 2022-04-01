@@ -70,8 +70,8 @@ namespace WebAddressbookTests
         {
             if (contactCache == null)
             {
-                manager.Navigator.GoToHomePage();
                 contactCache = new List<ContactData>();
+                manager.Navigator.GoToHomePage();
                 ICollection<IWebElement> elements = driver.FindElements(By.Name("entry"));
                 foreach (IWebElement element in elements)
                 {

@@ -32,13 +32,16 @@ namespace addressbook_test_data_generators
                 List<ContactData> contacts = new();
                 for (int i = 0; i < count; i++)
                 {
-                    contacts.Add(new ContactData(TestBase.GenerateRandomString(10), TestBase.GenerateRandomString(10))
+                    contacts.Add(new ContactData(TestBase.GenerateRandomString(1), TestBase.GenerateRandomString(1))
                     {
-                        MiddleName = TestBase.GenerateRandomString(10),
-                        Address = TestBase.GenerateRandomString(10)
+                        MiddleName = TestBase.GenerateRandomString(1),
+                        Address = TestBase.GenerateRandomString(1)
                     });
                 }
                 WriteToFiles(filename, format, contacts);
+            } else
+            {
+                Console.Out.Write("Unrecognized format of data type" + dataType);
             }
         }
 
