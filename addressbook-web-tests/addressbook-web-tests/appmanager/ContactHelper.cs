@@ -157,6 +157,7 @@ namespace WebAddressbookTests
         {
             manager.Navigator.GoToHomePage();
             InitContactModification(index);
+
             string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
             firstName = AddTextIfStringIsNotNull(firstName, "", " ");
 
@@ -164,7 +165,10 @@ namespace WebAddressbookTests
             middleName = AddTextIfStringIsNotNull(middleName, "", " ");
 
             string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
-            lastName = AddTextIfStringIsNotNull(lastName, "", "\r\n");
+
+            string nameBlock = (firstName + middleName + lastName).Trim();
+            nameBlock = AddTextIfStringIsNotNull(nameBlock, "", "\r\n");
+
 
             string nickName = driver.FindElement(By.Name("nickname")).GetAttribute("value");
             nickName = AddTextIfStringIsNotNull(nickName, "", "\r\n");
@@ -178,14 +182,25 @@ namespace WebAddressbookTests
             string address = driver.FindElement(By.Name("address")).GetAttribute("value");
             address = AddTextIfStringIsNotNull(address, "", "\r\n");
 
+            string generalBlock = (nickName + title + company + address).Trim();
+            generalBlock = AddTextIfStringIsNotNull(generalBlock, "", "\r\n");
+
+
             string email = driver.FindElement(By.Name("email")).GetAttribute("value");
-            email = AddTextIfStringIsNotNull(email, "\r\n", "\r\n");
+            email = AddTextIfStringIsNotNull(email, "", "\r\n");
 
             string email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
             email2 = AddTextIfStringIsNotNull(email2, "", "\r\n");
 
             string email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
             email3 = AddTextIfStringIsNotNull(email3, "", "\r\n");
+
+            string homepage = driver.FindElement(By.Name("homepage")).GetAttribute("value");
+            homepage = AddTextIfStringIsNotNull(homepage, "Homepage:" + "\r\n", "");
+
+            string linksBlock = (email + email2 + email3 + homepage).Trim();
+            linksBlock = AddTextIfStringIsNotNull(linksBlock, "\r\n", "\r\n");
+
 
             string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
             homePhone = AddTextIfStringIsNotNull(homePhone, "\r\n" + "H: ", "\r\n");
@@ -199,16 +214,15 @@ namespace WebAddressbookTests
             string fax = driver.FindElement(By.Name("fax")).GetAttribute("value");
             fax = AddTextIfStringIsNotNull(fax, "F: ", "\r\n");
 
-            string homepage = driver.FindElement(By.Name("homepage")).GetAttribute("value");
-            homepage = AddTextIfStringIsNotNull(homepage, "Homepage:" + "\r\n", "");
+            string phonesBlock = (homePhone + mobilePhone + workPhone + fax).Trim();
+            phonesBlock = AddTextIfStringIsNotNull(phonesBlock, "\r\n", "\r\n");
 
-            return (firstName + middleName + lastName + nickName + title 
-                + company + address + homePhone + mobilePhone + workPhone 
-                + fax + email + email2 + email3 + homepage).Trim();
+
+            return (nameBlock + generalBlock + phonesBlock + linksBlock).Trim();
         }
         public static string AddTextIfStringIsNotNull(string str, string before, string after)
         {
-            if (str.Equals(null) || str.Equals(""))
+            if (str.Equals("") || str.Equals(null))
             {
                 return "";
             }
