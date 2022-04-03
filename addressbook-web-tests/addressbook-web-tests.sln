@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "addressbook-web-tests", "addressbook-web-tests\addressbook-web-tests.csproj", "{3054A8AB-C314-4265-A9EF-C2B50BAFDE1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "addressbook-test-data-generators", "addressbook-test-data-generators\addressbook-test-data-generators.csproj", "{F79B827D-B683-4DB3-8DE3-80C73DBCA745}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "addressbook-test-data-generators", "addressbook-test-data-generators\addressbook-test-data-generators.csproj", "{F79B827D-B683-4DB3-8DE3-80C73DBCA745}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3054A8AB-C314-4265-A9EF-C2B50BAFDE1F} = {3054A8AB-C314-4265-A9EF-C2B50BAFDE1F}
 	EndProjectSection

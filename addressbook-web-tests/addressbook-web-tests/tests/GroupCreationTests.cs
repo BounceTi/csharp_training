@@ -2,14 +2,69 @@
 using NUnit.Framework;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using System.Xml.Serialization;
+using System;
 
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupCreationTests : AuthTestBase
+    public class GroupCreationTests : GroupTestBase
     {
+        [Test, TestCaseSource("GroupDataFromJsonFile")]
+        public void GroupCreationTest(GroupData group)
+        {
+            List<GroupData> oldGroups = GroupData.GetAll();
+
+            app.Groups.Create(group);
+
+            Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
+
+            List<GroupData> newGroups = GroupData.GetAll();
+
+            oldGroups.Add(group);
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
+        }
+
+        [Test]
+        public void BadNameGroupCreationTest()
+        {
+            GroupData group = new("a'a")
+            {
+                Header = "",
+                Footer = ""
+            };
+
+            List<GroupData> oldGroups = app.Groups.GetGroupList();
+
+            app.Groups.Create(group);
+
+            Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
+
+            List<GroupData> newGroups = app.Groups.GetGroupList();
+            oldGroups.Add(group);
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
+        }
+
+        [Test]
+        public void TestDBConnectivity()
+        {
+            DateTime start = DateTime.Now;
+            List<GroupData> fromUi = app.Groups.GetGroupList();
+            DateTime end = DateTime.Now;
+            Console.Out.WriteLine(end.Subtract(start));
+
+            start = DateTime.Now;
+            List<GroupData> fromDb = GroupData.GetAll();
+            end = DateTime.Now;
+            Console.Out.WriteLine(end.Subtract(start));
+        }
+
         public static IEnumerable<GroupData> RandomGroupDataProvider()
         {
             var groups = new List<GroupData>();
@@ -20,7 +75,7 @@ namespace WebAddressbookTests
                     Header = GenerateRandomString(100),
                     Footer = GenerateRandomString(100)
                 });
-            } 
+            }
             return groups;
         }
 
@@ -73,45 +128,6 @@ namespace WebAddressbookTests
             app.Visible = false;
             app.Quit();
             return groups;
-        }
-
-        [Test, TestCaseSource("GroupDataFromJsonFile")]
-        public void GroupCreationTest(GroupData group)
-        {
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
-
-            app.Groups.Create(group);
-
-            Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
-
-            List<GroupData> newGroups = app.Groups.GetGroupList();
-
-            oldGroups.Add(group);
-            oldGroups.Sort();
-            newGroups.Sort();
-            Assert.AreEqual(oldGroups, newGroups);
-        }
-
-        [Test]
-        public void BadNameGroupCreationTest()
-        {
-            GroupData group = new("a'a")
-            {
-                Header = "",
-                Footer = ""
-            };
-
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
-
-            app.Groups.Create(group);
-
-            Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
-
-            List<GroupData> newGroups = app.Groups.GetGroupList();
-            oldGroups.Add(group);
-            oldGroups.Sort();
-            newGroups.Sort();
-            Assert.AreEqual(oldGroups, newGroups);
         }
     }
 }
