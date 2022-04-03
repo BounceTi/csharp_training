@@ -55,10 +55,11 @@ namespace WebAddressbookTests
                 return 1;
             }
 
-            if (LastName.CompareTo(other.LastName) == 1 || LastName.CompareTo(other.LastName) == -1)
+            if (LastName.CompareTo(other.LastName) != 0)
             {
                 return LastName.CompareTo(other.LastName);
-            } else
+            } 
+            else
             {
                 return FirstName.CompareTo(other.FirstName);
             }
