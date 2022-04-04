@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,6 +25,54 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public void AddContactToGroup(ContactData contact, GroupData group)
+        {
+            manager.Navigator.GoToHomePage();
+            ClearGroupFilter();
+            SelectContact(contact.Id);
+            SelectGroupToAdd(group.Name);
+            CommitAddingContactToGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+        }
+        public ContactHelper RemoveContactFromGroup(ContactData contact, GroupData group)
+        {
+            manager.Navigator.GoToHomePage();
+            SelectGroup(group.Name);
+            SelectContact(contact.Id);
+            SubmitContactRemoveFromGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+            return this;
+        }
+
+        private ContactHelper SelectGroup(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText(name);
+            return this;
+        }
+
+        private ContactHelper SubmitContactRemoveFromGroup()
+        {
+            driver.FindElement(By.Name("remove")).Click();
+            return this;
+        }
+
+        private ContactHelper ClearGroupFilter()
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
+            return this;
+        }
+        private ContactHelper SelectGroupToAdd(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByText(name);
+            return this;
+        }
+        private ContactHelper CommitAddingContactToGroup()
+        {
+            driver.FindElement(By.Name("add")).Click();
+            return this;
+        }
         public ContactHelper Modify(int contactNumber, ContactData newData)
         {
             manager.Navigator.GoToHomePage();
@@ -111,7 +160,7 @@ namespace WebAddressbookTests
         }
         private ContactHelper SelectContact(String id)
         {
-            driver.FindElement(By.XPath("//tr[@name='entry']/td/input[@id = '" + id + "']")).Click();
+            driver.FindElement(By.Id(id)).Click();
             return this;
         }
         private ContactHelper SelectContact(int contactNumber)

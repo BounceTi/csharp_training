@@ -54,8 +54,8 @@ namespace WebAddressbookTests
         [Test]
         public void TestDBConnectivity()
         {
-            foreach (ContactData contact in GroupData.GetAll()[0].GetContacts()) {
-                Console.Out.WriteLine(contact);
+            foreach (ContactData contact in ContactData.GetAll()) {
+                Console.Out.WriteLine(contact.Deprecated);
             }
         }
 

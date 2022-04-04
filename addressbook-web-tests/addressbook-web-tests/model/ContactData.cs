@@ -101,6 +101,9 @@ namespace WebAddressbookTests
 
         [Column(Name = "fax")]
         public string Fax { get; set; }
+
+        [Column(Name = "deprecated")]
+        public string Deprecated { get; set; }
         public string AllPhones 
         { 
             get 
@@ -179,7 +182,7 @@ namespace WebAddressbookTests
         {
             using (AddressBookDB db = new())
             {
-                return (from c in db.Contacts select c).ToList();
+                return (from c in db.Contacts.Where(x => x.Deprecated == "0000-00-00 00:00:00") select c).ToList();
             }
         }
     }

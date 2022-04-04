@@ -71,8 +71,19 @@ namespace WebAddressbookTests
             using (AddressBookDB db = new())
             {
                 return (from c in db.Contacts
-                        from gcr in db.GCR.Where(p => p.GroupId == Id && p.ContactId == c.Id)
-                        select c).ToList();
+                        from gcr in db.GCR.Where(p => p.GroupId == Id && p.ContactId == c.Id 
+                        && c.Deprecated == "0000-00-00 00:00:00")
+                        select c).Distinct().ToList();
+            }
+        }
+        public List<ContactData> GetContactsForGroup(string id)
+        {
+            using (AddressBookDB db = new())
+            {
+                return (from c in db.Contacts
+                        from gcr in db.GCR.Where(p => p.GroupId == Id && p.ContactId == c.Id 
+                        && c.Deprecated == "0000-00-00 00:00:00" && p.GroupId == id)
+                        select c).Distinct().ToList();
             }
         }
     }
