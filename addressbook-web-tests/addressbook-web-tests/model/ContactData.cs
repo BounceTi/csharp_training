@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LinqToDB.Mapping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using static System.Net.WebRequestMethods;
 
 namespace WebAddressbookTests
 {
+    [Table(Name = "addressbook")]
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
         private string allPhones;
@@ -64,20 +66,40 @@ namespace WebAddressbookTests
                 return FirstName.CompareTo(other.FirstName);
             }
         }
-
+        [Column(Name = "firstname")]
         public string FirstName { get; set; }
 
+        [Column(Name = "lastname")]
         public string LastName { get; set; }
 
+        [Column(Name = "middlename")]
         public string MiddleName { get; set; }
+
+        [Column(Name = "nickname")]
         public string Nickname { get; set; }
+
+        [Column(Name = "photo")]
         public object Photo { get; set; }
+
+        [Column(Name = "title")]
         public string Title { get; set; }
+
+        [Column(Name = "company")]
         public string Company { get; set; }
+
+        [Column(Name = "address")]
         public string Address { get; set; }
+
+        [Column(Name = "home")]
         public string HomePhone { get; set; }
+
+        [Column(Name = "mobile")]
         public string MobilePhone { get; set; }
+
+        [Column(Name = "work")]
         public string WorkPhone { get; set; }
+
+        [Column(Name = "fax")]
         public string Fax { get; set; }
         public string AllPhones 
         { 
@@ -114,17 +136,37 @@ namespace WebAddressbookTests
                 allPhones = value;
             }
         }
+
+        [Column(Name = "email")]
         public string Email { get; set; }
+
+        [Column(Name = "email2")]
         public string Email2 { get; set; }
+
+        [Column(Name = "email3")]
         public string Email3 { get; set; }
+
+        [Column(Name = "homepage")]
         public string HomePage { get; set; }
+
         public string Birthday { get; set; }
+
         public string Anniversary { get; set; }
+
         public string Group { get; set; }
+
+        [Column(Name = "address2")]
         public string SecondaryAddress { get; set; }
+
+        [Column(Name = "phone2")]
         public string SecondaryHome { get; set; }
+
+        [Column(Name = "notes")]
         public string Notes { get; set; }
+
+        [Column(Name = "id"), PrimaryKey]
         public string Id { get; set; }
+
         private string CleanUp(string phone)
         {
             if (phone == null || phone == "")
@@ -132,6 +174,13 @@ namespace WebAddressbookTests
                 return "";
             }
             return Regex.Replace(phone, "[ ()-]", "") + "\r\n";
+        }
+        public static List<ContactData> GetAll()
+        {
+            using (AddressBookDB db = new())
+            {
+                return (from c in db.Contacts select c).ToList();
+            }
         }
     }
 }

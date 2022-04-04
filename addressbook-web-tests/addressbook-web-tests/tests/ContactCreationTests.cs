@@ -8,8 +8,48 @@ using System.Xml.Serialization;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class ContactCreationTests : AuthTestBase
+    public class ContactCreationTests : ContactTestBase
     {
+        [Test, TestCaseSource("ContactDataFromJsonFile")]
+        public void ContactCreationTest(ContactData contact) 
+        {
+            List<ContactData> oldContacts = ContactData.GetAll();
+
+            app.Contacts.Create(contact);
+
+            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
+
+            List<ContactData> newContacts = ContactData.GetAll();
+
+            oldContacts.Add(contact);
+            oldContacts.Sort();
+            newContacts.Sort();
+
+            Assert.AreEqual(oldContacts, newContacts);
+        }
+
+        [Test]
+        public void BadNameContactCreationTest()
+        {
+            ContactData contact = new("a'a", "")
+            {
+                MiddleName = "",
+            };
+
+            List<ContactData> oldContacts = ContactData.GetAll();
+
+            app.Contacts.Create(contact);
+
+            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
+
+            List<ContactData> newContacts = ContactData.GetAll();
+
+            oldContacts.Add(contact);
+            oldContacts.Sort();
+            newContacts.Sort();
+
+            Assert.AreEqual(oldContacts, newContacts);
+        }
         public static IEnumerable<ContactData> RandomContactDataProvider()
         {
             var contacts = new List<ContactData>();
@@ -37,47 +77,5 @@ namespace WebAddressbookTests
             return JsonConvert.DeserializeObject<List<ContactData>>(
                 File.ReadAllText(@"contacts.json"));
         }
-
-        [Test, TestCaseSource("ContactDataFromJsonFile")]
-        public void ContactCreationTest(ContactData contact) 
-        {
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
-
-            app.Contacts.Create(contact);
-
-            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
-
-            List<ContactData> newContacts = app.Contacts.GetContactList();
-
-            oldContacts.Add(contact);
-            oldContacts.Sort();
-            newContacts.Sort();
-
-            Assert.AreEqual(oldContacts, newContacts);
-        }
-
-        [Test]
-        public void BadNameContactCreationTest()
-        {
-            ContactData contact = new("a'a", "")
-            {
-                MiddleName = "",
-            };
-
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
-
-            app.Contacts.Create(contact);
-
-            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
-
-            List<ContactData> newContacts = app.Contacts.GetContactList();
-
-            oldContacts.Add(contact);
-            oldContacts.Sort();
-            newContacts.Sort();
-
-            Assert.AreEqual(oldContacts, newContacts);
-        }
-
     }
 }

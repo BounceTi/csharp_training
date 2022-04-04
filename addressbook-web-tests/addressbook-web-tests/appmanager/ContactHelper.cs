@@ -33,10 +33,27 @@ namespace WebAddressbookTests
             ReturnToContactsPage();
             return this;
         }
+        public ContactHelper Modify(ContactData contact, ContactData newData)
+        {
+            manager.Navigator.GoToHomePage();
+            InitContactModification(contact.Id);
+            FillContactForm(newData);
+            SubmitContactModification();
+            ReturnToContactsPage();
+            return this;
+        }
         public ContactHelper Remove(int contactNumber)
         {
             manager.Navigator.GoToHomePage();
             SelectContact(contactNumber);
+            RemoveContact();
+            ReturnToContactsPage();
+            return this;
+        }
+        public ContactHelper Remove(ContactData contact)
+        {
+            manager.Navigator.GoToHomePage();
+            SelectContact(contact.Id);
             RemoveContact();
             ReturnToContactsPage();
             return this;
@@ -92,6 +109,11 @@ namespace WebAddressbookTests
             contactCache = null;
             return this;
         }
+        private ContactHelper SelectContact(String id)
+        {
+            driver.FindElement(By.XPath("//tr[@name='entry']/td/input[@id = '" + id + "']")).Click();
+            return this;
+        }
         private ContactHelper SelectContact(int contactNumber)
         {
             driver.FindElement(By.XPath("//tr[@name='entry'][" + (contactNumber + 1) + "]/td/input")).Click();
@@ -120,7 +142,13 @@ namespace WebAddressbookTests
 
         public ContactHelper InitContactModification(int contactNumber)
         {
+            
             driver.FindElement(By.XPath("//tr[@name='entry'][" + (contactNumber + 1) + "]//img[@title='Edit']")).Click();
+            return this;
+        }
+        public ContactHelper InitContactModification(String id)
+        {
+            driver.FindElement(By.XPath("//tr[@name='entry' and .//input[@id='" + id + "']]//img[@title='Edit']")).Click();
             return this;
         }
         public ContactHelper OpenContactInformation(int contactNumber)
