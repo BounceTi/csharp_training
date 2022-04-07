@@ -145,5 +145,19 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("edit")).Click();
             return this;
         }
+
+        public bool CheckContactExistInGroup(ContactData contact, GroupData group)
+        {
+            bool contactExist = false;
+            List<ContactData> contactListForGroup = group.GetContactsForGroup(group.Id);
+            foreach (ContactData c in contactListForGroup)
+            {
+                if (c.Id == contact.Id)
+                {
+                    contactExist = true;
+                }
+            }
+            return contactExist;
+        }
     }
 }

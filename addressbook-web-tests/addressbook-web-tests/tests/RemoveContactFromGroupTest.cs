@@ -10,10 +10,24 @@ namespace WebAddressbookTests
         public void TestRemoveContactFromGroup()
         {
             GroupData group = GroupData.GetAll()[0];
+            if (group == null)
+            {
+                GroupData g = new("test");
+                app.Groups.Create(g);
+                group = GroupData.GetAll()[0];
+            }
+
             List<ContactData> oldList = group.GetContacts();
+            if (oldList == null)
+            {
+                ContactData c = new("testRemoveCG", "testRemoveCG");
+                app.Contacts.Create(c);
+                oldList = group.GetContacts();
+            }
+
             ContactData contact = ContactData.GetAll().First();
 
-            if (!CheckContactExistInGroup(contact, group))
+            if (!app.Groups.CheckContactExistInGroup(contact, group))
             {
                 app.Contacts.AddContactToGroup(contact, group);
             }
@@ -27,18 +41,6 @@ namespace WebAddressbookTests
 
             Assert.AreEqual(oldList, newList);
         }
-        public static bool CheckContactExistInGroup(ContactData contact, GroupData group)
-        {
-            bool contactExist = false;
-            List<ContactData> contactListForGroup = group.GetContactsForGroup(group.Id);
-            foreach (ContactData c in contactListForGroup)
-            {
-                if (c.Id == contact.Id)
-                {
-                    contactExist = true;
-                }
-            }
-            return contactExist;
-        }
+        
     }
 }
