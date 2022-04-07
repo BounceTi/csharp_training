@@ -146,7 +146,7 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public bool CheckContactExistInGroup(ContactData contact, GroupData group)
+        public static bool CheckContactExistInGroup(ContactData contact, GroupData group)
         {
             bool contactExist = false;
             List<ContactData> contactListForGroup = group.GetContactsForGroup(group.Id);
@@ -155,6 +155,7 @@ namespace WebAddressbookTests
                 if (c.Id == contact.Id)
                 {
                     contactExist = true;
+                    return contactExist;
                 }
             }
             return contactExist;

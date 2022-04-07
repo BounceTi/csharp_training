@@ -27,7 +27,7 @@ namespace WebAddressbookTests
 
             ContactData contact = ContactData.GetAll().First();
 
-            if (!app.Groups.CheckContactExistInGroup(contact, group))
+            if (!GroupHelper.CheckContactExistInGroup(contact, group))
             {
                 app.Contacts.AddContactToGroup(contact, group);
             }
