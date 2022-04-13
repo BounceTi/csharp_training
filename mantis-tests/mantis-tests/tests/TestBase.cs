@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
@@ -15,16 +16,13 @@ namespace mantis_tests
         {
             app = ApplicationManager.GetInstance();
         }
+
         private static Random rnd = new Random();
         public static string GenerateRandomString(int max)
         {
-            int l = Convert.ToInt32(rnd.NextDouble() * max);
-            var builder = new StringBuilder();
-            for (int i = 0; i < l; i++)
-            {
-                builder.Append(Convert.ToChar(32 + Convert.ToInt32(rnd.NextDouble() * 65)));
-            }
-            return builder.ToString();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, max)
+                .Select(s => s[rnd.Next(s.Length)]).ToArray());
         }
     }
 }
