@@ -13,7 +13,7 @@ namespace addressbook_tests_white
 
             GroupData newGroup = new GroupData()
             {
-                Name = "test"
+                Name = "Group creation test"
             };
 
             app.Groups.Add(newGroup);

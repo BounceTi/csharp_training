@@ -16,7 +16,6 @@ namespace addressbook_tests_white
                 {
                     Name = "Name"
                 };
-
                 app.Groups.Add(group);
             }
 
