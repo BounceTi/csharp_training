@@ -12,25 +12,24 @@ namespace mantis_tests
         [Test]
         public void TestProjectRemoval()
         {
-            List<ProjectData> oldProjects = app.PMHelper.GetAllProjects();
+            List<ProjectData> oldProjects = app.API.GetAllProjects(app.AdminAccount);
 
-            if(oldProjects.Count == 0)
+            if (oldProjects.Count == 0)
             {
                 ProjectData project = new ProjectData()
                 {
                     Name = GenerateRandomString(10),
                     Description = "This project was created by autotests",
-                    Status = ProjectData.ProjectStatus.Released
                 };
-
-                app.PMHelper.CreateNewProject(project);
+                app.API.AddNewProject(app.AdminAccount, project);
+                oldProjects = app.API.GetAllProjects(app.AdminAccount);
             }
 
             ProjectData toBeRemoved = oldProjects[0];
 
             app.PMHelper.Remove(toBeRemoved);
 
-            List<ProjectData> newProjects = app.PMHelper.GetAllProjects();
+            List<ProjectData> newProjects = app.API.GetAllProjects(app.AdminAccount);
 
             oldProjects.RemoveAt(0);
 

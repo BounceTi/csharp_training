@@ -5,13 +5,7 @@ namespace mantis_tests
 {
     public class LoginHelper : HelperBase
     {
-
-        private string mantisVersion;
-
-        public LoginHelper(ApplicationManager manager, string mantisVersion) : base(manager) 
-        {
-            this.mantisVersion = mantisVersion;
-        }
+        public LoginHelper(ApplicationManager manager) : base(manager) { }
 
         public void Login(AccountData account)
         {
@@ -21,7 +15,6 @@ namespace mantis_tests
                 {
                     return;
                 }
-
                 Logout();
             }
             Type(By.Name("username"), account.Name);
@@ -34,8 +27,9 @@ namespace mantis_tests
         {
             if (IsLoggedIn())
             {
-                driver.FindElement(By.CssSelector("//div[2]/ul/li[3]/a")).Click();
-                driver.FindElement(By.LinkText(mantisVersion + "/logout_page.php")).Click();
+                driver.FindElement(By.XPath("//div[2]/ul/li[3]")).Click();
+                IWebElement dropdownMenu = driver.FindElement(By.ClassName("user-menu"));
+                dropdownMenu.FindElement(By.XPath("//li[4]/a/i")).Click();
             }
         }
 

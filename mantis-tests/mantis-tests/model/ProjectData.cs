@@ -4,6 +4,7 @@ namespace mantis_tests
 {
     public class ProjectData : IEquatable<ProjectData>, IComparable<ProjectData>
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public ProjectStatus Status { get; set; }
         public ProjectViewState State { get; set; }

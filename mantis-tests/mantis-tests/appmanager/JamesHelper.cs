@@ -24,11 +24,10 @@ namespace mantis_tests
 
         public void Delete(AccountData account)
         {
-            if (!Verify(account))
+            if (! Verify(account))
             {
                 return;
             }
-
             TelnetConnection telnet = LoginToJames();
             telnet.WriteLine("deluser " + account.Name);
             Console.Out.WriteLine(telnet.Read());
@@ -38,9 +37,9 @@ namespace mantis_tests
         {
             TelnetConnection telnet = LoginToJames();
             telnet.WriteLine("verify " + account.Name);
-            String s = telnet.Read();
+            string s = telnet.Read();
             Console.Out.WriteLine(s);
-            return !s.Contains("does not exist");
+            return ! s.Contains("does not exist");
         }
 
         private TelnetConnection LoginToJames()

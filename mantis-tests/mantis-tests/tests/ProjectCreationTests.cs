@@ -13,7 +13,7 @@ namespace mantis_tests
         [Test]
         public void TestProjectCreation()
         {
-            List<ProjectData> oldProjects = app.PMHelper.GetAllProjects();
+            List<ProjectData> oldProjects = app.API.GetAllProjects(app.AdminAccount);
 
             ProjectData project = new ProjectData()
             {
@@ -34,7 +34,7 @@ namespace mantis_tests
 
             Assert.IsTrue(app.PMHelper.CheckSuccessAlert());
 
-            List<ProjectData> newProjects = app.PMHelper.GetAllProjects();
+            List<ProjectData> newProjects = app.API.GetAllProjects(app.AdminAccount);
 
             oldProjects.Add(project);
             oldProjects.Sort();

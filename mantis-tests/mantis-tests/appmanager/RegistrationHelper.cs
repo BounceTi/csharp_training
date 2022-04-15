@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Text.RegularExpressions;
 
@@ -10,6 +11,7 @@ namespace mantis_tests
 
         public void Register(AccountData account)
         {
+            manager.Auth.Logout();
             OpenMainPage();
             OpenRegistrationForm();
             FillRegistrationForm(account);
@@ -17,6 +19,7 @@ namespace mantis_tests
             String url = GetConfirmationUrl(account);
             FillPasswordForm(url, account);
             SubmitPasswordForm();
+            WaitLoginPage();
         }
 
         private string GetConfirmationUrl(AccountData account)
@@ -58,6 +61,12 @@ namespace mantis_tests
         private void OpenMainPage()
         {
             manager.Driver.Url = "http://localhost/mantisbt-2.25.2/login_page.php";
+        }
+
+        private void WaitLoginPage()
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+            wait.Until(driver => driver.FindElement(By.Id("username")));
         }
     }
 }
